@@ -734,13 +734,13 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
 <li>Whitespace means tab (0x09) or space (0x20).</li>
 <li>Newline means LF (0x0A) or CRLF (0x0D 0x0A).</li>
 </ul>
-<h3 id="comment">Comment</h3>
+<h2 id="comment">Comment</h2>
 <p>A hash symbol marks the rest of the line as a comment, except when inside a
 string.</p>
 <pre class="hljs"><span class="hljs-comment"># This is a full-line comment</span>
 <span class="hljs-attr">key:</span> <span class="hljs-string">&quot;value&quot;</span>  <span class="hljs-comment"># This is a comment at the end of a line</span>
 <span class="hljs-attr">another:</span> <span class="hljs-string">&quot;# This is not a comment&quot;</span></pre><p>Control characters other than tab (U+0000 to U+0008, U+000A to U+001F, U+007F) are not permitted in comments.</p>
-<h3 id="key-value-pair">Key/Value Pair</h3>
+<h2 id="key-value-pair">Key/Value Pair</h2>
 <p>The primary building block of a Gura document is the key/value pair.</p>
 <p>Keys are on the left of the colon and values are on the right. Whitespace is ignored around key names and values. The key, colon, and value must be on the same line (though some values can be broken over multiple lines).</p>
 <pre class="hljs"><span class="hljs-attr">key:</span> <span class="hljs-string">&quot;value&quot;</span></pre><p>Values must have one of the following types.</p>
@@ -755,9 +755,8 @@ string.</p>
 <li><a href="#array">Array</a></li>
 </ul>
 <p>Unspecified values are invalid.</p>
-<pre class="hljs"><span class="hljs-attr">key:</span> <span class="hljs-comment"># INVALID</span></pre><p>There must be a newline (or EOF) after a key/value pair. (See <a href="#inline-table">Inline
-Table</a> for exceptions.)</p>
-<pre class="hljs"><span class="hljs-keyword">first</span> = <span class="hljs-string">&quot;Tom&quot;</span> <span class="hljs-keyword">last</span> = <span class="hljs-string">&quot;Preston-Werner&quot;</span> <span class="hljs-comment"># INVALID</span></pre><h3 id="keys">Keys</h3>
+<pre class="hljs"><span class="hljs-attr">key:</span> <span class="hljs-comment"># INVALID</span></pre><p>There must be a newline (or EOF) after a key/value pair.</p>
+<pre class="hljs"><span class="hljs-keyword">first</span>: <span class="hljs-string">&quot;Carlitos&quot;</span> <span class="hljs-keyword">last</span>: <span class="hljs-string">&quot;Gardel&quot;</span> <span class="hljs-comment"># INVALID</span></pre><h2 id="keys">Keys</h2>
 <p>A key may be either bare, quoted, or dotted.</p>
 <p><strong>Bare keys</strong> may only contain ASCII letters, ASCII digits, underscores, and
 dashes (<code>A-Za-z0-9_-</code>). Note that bare keys are allowed to be composed of only
@@ -768,23 +767,24 @@ ASCII digits, e.g. <code>1234</code>, but are always interpreted as strings.</p>
 <span class="hljs-attr">1234:</span> <span class="hljs-string">&quot;value&quot;</span></pre><p>A bare key must be non-empty.</p>
 <pre class="hljs"><span class="hljs-string">:</span> <span class="hljs-string">&quot;no key name&quot;</span>  <span class="hljs-comment"># INVALID</span></pre><p>Defining a key multiple times is invalid and it must raise a <code>DuplicatedKeyError</code> error.</p>
 <pre class="hljs"><span class="hljs-comment"># DO NOT DO THIS</span>
-<span class="hljs-attr">name:</span> <span class="hljs-string">&quot;Tom&quot;</span>
-<span class="hljs-attr">name:</span> <span class="hljs-string">&quot;Pradyun&quot;</span></pre><h3 id="null">Null</h3>
+<span class="hljs-attr">name:</span> <span class="hljs-string">&quot;Carlos&quot;</span>
+<span class="hljs-attr">name:</span> <span class="hljs-string">&quot;Anibal&quot;</span></pre><h2 id="null">Null</h2>
 <p>The absence of value can be represented by the <code>null</code> value:</p>
-<pre class="hljs"><span class="hljs-attr">none_value:</span> <span class="hljs-literal">null</span></pre><h3 id="string">String</h3>
+<pre class="hljs"><span class="hljs-attr">none_value:</span> <span class="hljs-literal">null</span></pre><h2 id="string">String</h2>
 <p>There are four ways to express strings: basic, multi-line basic, literal, and multi-line literal. All strings must contain only valid UTF-8 characters.</p>
 <p>Unlike YAML, unquoted strings are not allowed.</p>
 <p><strong>Basic strings</strong> are surrounded by quotation marks (<code>&quot;</code>). Any Unicode character may be used except those that must be escaped: quotation mark, backslash, and the control characters other than tab (U+0000 to U+0008, U+000A to U+001F, U+007F).</p>
 <pre class="hljs"><span class="hljs-attr">str:</span> <span class="hljs-string">&quot;I&#x27;m a string. \&quot;You can quote me\&quot;. Name\tJos\u00E9\nLocation\tSF.&quot;</span></pre><p>For convenience, some popular characters have a compact escape sequence.</p>
-<pre class="hljs"><span class="hljs-string">\b</span>         - backspace       (U+<span class="hljs-number">0008</span>)
-<span class="hljs-string">\t</span>         - tab             (U+<span class="hljs-number">0009</span>)
-<span class="hljs-string">\n</span>         - linefeed        (U+<span class="hljs-number">000</span>A)
-<span class="hljs-string">\f</span>         - form feed       (U+<span class="hljs-number">000</span>C)
-<span class="hljs-string">\r</span>         - carriage <span class="hljs-keyword">return</span> (U+<span class="hljs-number">000</span>D)
-<span class="hljs-string">\&quot;</span>         - quote           (U+<span class="hljs-number">0022</span>)
-<span class="hljs-string">\\</span>         - backslash       (U+<span class="hljs-number">005</span>C)
-<span class="hljs-string">\uXXXX</span>     - unicode         (U+XXXX)
-<span class="hljs-string">\UXXXXXXXX</span> - unicode         (U+XXXXXXXX)</pre><p>Any Unicode character may be escaped with the <code>\uXXXX</code> or <code>\UXXXXXXXX</code> forms. The escape codes must be valid Unicode <a href="https://unicode.org/glossary/#unicode_scalar_value">scalar values</a>.</p>
+<pre class="hljs"><span class="hljs-string">\b</span>         - backspace                  (U+<span class="hljs-number">0008</span>)
+<span class="hljs-string">\t</span>         - tab                        (U+<span class="hljs-number">0009</span>)
+<span class="hljs-string">\n</span>         - linefeed                   (U+<span class="hljs-number">000</span>A)
+<span class="hljs-string">\f</span>         - form feed                  (U+<span class="hljs-number">000</span>C)
+<span class="hljs-string">\r</span>         - carriage <span class="hljs-keyword">return</span>            (U+<span class="hljs-number">000</span>D)
+<span class="hljs-string">\&quot;</span>         - quote                      (U+<span class="hljs-number">0022</span>)
+<span class="hljs-string">\\</span>         - backslash                  (U+<span class="hljs-number">005</span>C)
+<span class="hljs-string">\$</span>         - dollar sign (variables)    (U+<span class="hljs-number">0024</span>)
+<span class="hljs-string">\uXXXX</span>     - unicode                    (U+XXXX)
+<span class="hljs-string">\UXXXXXXXX</span> - unicode                    (U+XXXXXXXX)</pre><p>Any Unicode character may be escaped with the <code>\uXXXX</code> or <code>\UXXXXXXXX</code> forms. The escape codes must be valid Unicode <a href="https://unicode.org/glossary/#unicode_scalar_value">scalar values</a>.</p>
 <p>All other escape sequences not listed above will be interpreted as literal.</p>
 <p>Sometimes you need to express passages of text (e.g. translation files) or would like to break up a very long string into multiple lines. Gura makes this easy.</p>
 <p><strong>Multi-line basic strings</strong> are surrounded by three quotation marks on each side and allow newlines. A newline immediately following the opening delimiter will be trimmed. All other whitespace and newline characters remain intact.</p>
@@ -822,7 +822,7 @@ The quick brown \
 <pre class="hljs"><span class="hljs-comment"># What you see is what you get.</span>
 <span class="hljs-attr">winpath:</span> <span class="hljs-string">&#x27;C:\Users\nodejs\templates&#x27;</span>
 <span class="hljs-attr">winpath2:</span> <span class="hljs-string">&#x27;\\ServerX\admin$\system32\&#x27;
-quoted: &#x27;</span><span class="hljs-string">Tom</span> <span class="hljs-string">&quot;Dubs&quot;</span> <span class="hljs-string">Preston-Werner&#x27;</span>
+quoted: &#x27;</span><span class="hljs-string">John</span> <span class="hljs-string">&quot;Dog lover&quot;</span> <span class="hljs-string">Wick&#x27;</span>
 <span class="hljs-attr">regex:</span> <span class="hljs-string">&#x27;&lt;\i\c*\s*&gt;&#x27;</span></pre><p>Since there is no escaping, there is no way to write a single quote inside a literal string enclosed by single quotes. Luckily, Gura supports a multi-line version of literal strings that solves this problem.</p>
 <p><strong>Multi-line literal strings</strong> are surrounded by three single quotes on each side and allow newlines. Like literal strings, there is no escaping whatsoever. A newline immediately following the opening delimiter will be trimmed. All other content between the delimiters is interpreted as-is without modification.</p>
 <pre class="hljs"><span class="hljs-attr">regex2:</span> <span class="hljs-string">&#x27;&#x27;</span><span class="hljs-string">&#x27;I [dw]on&#x27;</span><span class="hljs-string">t</span> <span class="hljs-string">need</span> <span class="hljs-string">\d{2}</span> <span class="hljs-string">apples&#x27;&#x27;&#x27;</span>
@@ -839,7 +839,7 @@ trimmed in raw strings.
 
 <span class="hljs-comment"># &#x27;That,&#x27; she said, &#x27;is still pointless.&#x27;</span>
 <span class="hljs-attr">str:</span> <span class="hljs-string">&#x27;&#x27;</span><span class="hljs-string">&#x27;&#x27;</span><span class="hljs-string">That,&#x27;</span> <span class="hljs-string">she</span> <span class="hljs-string">said,</span> <span class="hljs-string">&#x27;is still pointless.&#x27;</span><span class="hljs-string">&#x27;&#x27;</span><span class="hljs-string">&#x27;</span></pre><p>Control characters other than tab are not permitted in a literal string. Thus, for binary data, it is recommended that you use Base64 or another suitable ASCII or UTF-8 encoding. The handling of that encoding will be application-specific.</p>
-<h3 id="integer">Integer</h3>
+<h2 id="integer">Integer</h2>
 <p>Integers are whole numbers. Positive numbers may be prefixed with a plus sign. Negative numbers are prefixed with a minus sign.</p>
 <pre class="hljs"><span class="hljs-attr">int1:</span> <span class="hljs-string">+99</span>
 <span class="hljs-attr">int2:</span> <span class="hljs-number">42</span>
@@ -859,7 +859,7 @@ trimmed in raw strings.
 
 <span class="hljs-comment"># Binary with prefix `0b`</span>
 <span class="hljs-attr">bin1:</span> <span class="hljs-string">0b11010110</span></pre><p>Arbitrary 64-bit signed integers (from −2^63 to 2^63−1) should be accepted and handled losslessly. If an integer cannot be represented losslessly, an error must be thrown.</p>
-<h3 id="float">Float</h3>
+<h2 id="float">Float</h2>
 <p>Floats should be implemented as IEEE 754 binary64 values.</p>
 <p>A float consists of an integer part (which follows the same rules as decimal integer values) followed by a fractional part and/or an exponent part. If both a fractional part and exponent part are present, the fractional part must precede the exponent part.</p>
 <pre class="hljs"><span class="hljs-comment"># Fractional</span>
@@ -890,10 +890,10 @@ trimmed in raw strings.
 <span class="hljs-comment"># Not a number</span>
 <span class="hljs-attr">sf4:</span> <span class="hljs-string">nan</span>  <span class="hljs-comment"># Actual sNaN/qNaN encoding is implementation-specific</span>
 <span class="hljs-attr">sf5:</span> <span class="hljs-string">+nan</span> <span class="hljs-comment"># Same as `nan`</span>
-<span class="hljs-attr">sf6:</span> <span class="hljs-string">-nan</span> <span class="hljs-comment"># Valid, actual encoding is implementation-specific</span></pre><h3 id="boolean">Boolean</h3>
+<span class="hljs-attr">sf6:</span> <span class="hljs-string">-nan</span> <span class="hljs-comment"># Valid, actual encoding is implementation-specific</span></pre><h2 id="boolean">Boolean</h2>
 <p>Booleans are just the tokens you&#39;re used to. Always lowercase.</p>
 <pre class="hljs"><span class="hljs-attr">bool1:</span> <span class="hljs-literal">true</span>
-<span class="hljs-attr">bool2:</span> <span class="hljs-literal">false</span></pre><h3 id="object">Object</h3>
+<span class="hljs-attr">bool2:</span> <span class="hljs-literal">false</span></pre><h2 id="object">Object</h2>
 <p>Like YAML, objects have a header (key), a colon and underneath each of their attributes, which must begin in an indented block. This indentation must be respected throughout the entire Gura file.</p>
 <pre class="hljs"><span class="hljs-attr">services:</span>
   <span class="hljs-attr">nginx:</span>
@@ -922,7 +922,7 @@ trimmed in raw strings.
 <pre class="hljs"><span class="hljs-attr">user:</span>
     <span class="hljs-attr">name:</span> <span class="hljs-comment"># INVALID</span>
     <span class="hljs-attr">surname:</span> <span class="hljs-string">&quot;Troilo&quot;</span></pre><p>In both of the above cases, an <code>InvalidIndentationError</code> error must be raised.</p>
-<h3 id="array">Array</h3>
+<h2 id="array">Array</h2>
 <p>Arrays are square brackets with values inside. Whitespace is ignored. Elements are separated by commas. Arrays can contain values of the same data types as allowed in key/value pairs. Values of different types may be mixed.</p>
 <pre class="hljs"><span class="hljs-attr">integers:</span> [ <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span> ]
 <span class="hljs-attr">colors:</span> [ <span class="hljs-string">&quot;red&quot;</span>, <span class="hljs-string">&quot;yellow&quot;</span>, <span class="hljs-string">&quot;green&quot;</span> ]
@@ -948,7 +948,7 @@ trimmed in raw strings.
 <span class="hljs-attr">integers3:</span> [
   <span class="hljs-number">1</span>,
   <span class="hljs-number">2</span>, <span class="hljs-comment"># this is ok</span>
-]</pre><h3 id="variables">Variables</h3>
+]</pre><h2 id="variables">Variables</h2>
 <p>You can define variables. They start with a <code>$</code> sign, a name and a colon. A variable name has to respect the same regex as keys.</p>
 <pre class="hljs"><span class="hljs-string">$my_string_var:</span> <span class="hljs-string">&quot;127.0.0.1&quot;</span>
 <span class="hljs-string">$my_integer_var:</span> <span class="hljs-number">8080</span>
@@ -977,7 +977,11 @@ trimmed in raw strings.
 
 <span class="hljs-comment"># You can replace environment variables like normal ones. After all, environment variables are normal variables defined before parsing.</span>
 <span class="hljs-string">$PATH:</span> <span class="hljs-string">&quot;Another value&quot;</span></pre><p>When a variable is used Gura looks for the definition in the current file and the imported ones. If it is not defined, checks for available environment variables, if it is not, it must raise a <code>VariableNotDefinedError</code> error.</p>
-<h3 id="imports">Imports</h3>
+<p>To use <code>$</code> in string just use literal or escape them:</p>
+<pre class="hljs"><span class="hljs-attr">basic:</span> <span class="hljs-string">&quot;I won \$500 dollars!&quot;</span>
+<span class="hljs-attr">basic_multiline:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-string">&quot;I won \$500 dollars!&quot;</span><span class="hljs-string">&quot;&quot;</span>
+<span class="hljs-attr">literal:</span> <span class="hljs-string">&#x27;I won $500 dollars!&#x27;</span>
+<span class="hljs-attr">literal_multiline:</span> <span class="hljs-string">&#x27;&#x27;</span><span class="hljs-string">&#x27;I won $500 dollars!&#x27;</span><span class="hljs-string">&#x27;&#x27;</span></pre><h2 id="imports">Imports</h2>
 <p>You can import one or more Gura files using an <code>import</code> statement. The effect of importing a file is the same as replacing the import by the file&#39;s contents. Therefore, all the keys and variables defined on them will be available in the file which is importing.</p>
 <p>Imports must occur at the beginning of the file and there must be no blanks in front of the <code>import</code> statement. Must be only one whitespace between the <code>import</code> and file name. The file name must be between single quotation marks (&quot;) and there won&#39;t be special character escaping. Importing a non-existing file must raise a <code>FileNotFoundError</code> error.</p>
 <pre class="hljs"><span class="hljs-string">import</span> <span class="hljs-string">&quot;another_file.ura&quot;</span> <span class="hljs-comment"># Good</span>
@@ -1004,12 +1008,14 @@ trimmed in raw strings.
 <pre class="hljs"><span class="hljs-string">$common_path:</span> <span class="hljs-string">&quot;/extremely/long/path/to/some/useful/directory&quot;</span>
 
 <span class="hljs-string">import</span> <span class="hljs-string">&quot;$common_path/one.ura&quot;</span>
-<span class="hljs-string">import</span> <span class="hljs-string">&quot;$common_path/two.ura&quot;</span></pre><h3 id="filename-extension">Filename Extension</h3>
+<span class="hljs-string">import</span> <span class="hljs-string">&quot;$common_path/two.ura&quot;</span></pre><h2 id="filename-extension">Filename Extension</h2>
 <p>Gura files should use the extension <code>.ura</code>.</p>
-<h3 id="mime-type">MIME Type</h3>
+<h2 id="mime-type">MIME Type</h2>
 <p>When transferring Gura files over the internet, the appropriate MIME type is <code>application/gura</code>.</p>
-<h3 id="abnf-grammar">ABNF Grammar</h3>
-<p>A formal description of Gura&#39;s syntax is available, as a separate <a href="https://github.com/jware-solutions/gura/blob/master/gura.abnf">ABNF file</a>.</p>
+<h2 id="abnf-grammar">ABNF Grammar</h2>
+<p>A formal description of Gura&#39;s syntax is available, as a separate <a href="#gura.abnf">ABNF file</a>.</p>
+<h2 id="license">License</h2>
+<p>Gura is distributed under the terms of the MIT license.</p>
 <p class="page" id="LICENSE"></p><h1>License</h1>
 <p>Gura is distributed under the terms of the <a href="https://github.com/jware-solutions/gura/blob/master/LICENSE">MIT license</a>.</p>
 
